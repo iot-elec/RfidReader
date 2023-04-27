@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test_nfc/model/inventory.dart';
 import 'package:test_nfc/model/mock/data.dart';
@@ -15,56 +14,37 @@ import 'package:test_nfc/model/mock/mock_img_str.dart';
 
 import '../widgets/item_list_header.dart';
 
-class ScanningPage2 extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
-
-class ScanningPage extends HookWidget {
+class ScanningPage extends StatefulWidget {
+  const ScanningPage({super.key});
   static const id = "/scanning";
 
   @override
-  Widget build(BuildContext context) {
-    final listInventoryModel = useState(ListInventoryModel(data: []));
-    final _counter = useState(0);
+  State<ScanningPage> createState() => _ScanningPageState();
+}
 
-    useEffect( () {
-    // side effects code here.
-    //subscription to a stream, opening a WebSocket connection, or performing HTTP requests
-      Future<void> tagReaderasync() async {
-        NFC nfc = NFC();
-        await nfc.init();
+class _ScanningPageState extends State<ScanningPage> {
+  int _counter = 0;
+  ListInventoryModel listInventoryModel = ListInventoryModel(data: []);
+  Future<void> tryReader() async {
+    // NFC nfc = NFC();
+    // await nfc.init();
 
-        if (nfc.checkReader()) {
+    // List<int> res = await nfc.readCard(readerIndex: 0);
 
-          List<int> res = await nfc.readCard(readerIndex: 0);
-          await nfc.removeCard();
-
-          if (kDebugMode) {
-            print(res);
-          }          
-
-          if (listInventoryModel.value.data.isNotEmpty ) {
-            if (!listInventoryModel.value.checkIfInventoryIdIsAdded(res)) {
-              if (kDebugMode) {
-                print("call api");
-              }
-              // call api to get new inventory data
-            } 
-          } 
-
-          // mock data test
-          var r = json.decode(inventoryDataMock);
-          listInventoryModel.value = listInventoryModel.value.fromJson(r);
-        }
-        // return listInventoryModel.fromJson(r);
-      }
-      tagReaderasync();
+    // mock data test
+    var r = json.decode(inventoryDataMock);
+    setState(() {
+      listInventoryModel = listInventoryModel.fromJson(r);
+      _counter++;
     });
+  }
 
+  Future<void> _incrementCounter() async {
+    await tryReader();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Row(
@@ -73,7 +53,7 @@ class ScanningPage extends HookWidget {
             Expanded(
               flex: 8,
               child: ItemListDashBoardWidget(
-                listInventoryModel: listInventoryModel.value,
+                listInventoryModel: listInventoryModel,
               ),
             ),
             Expanded(
@@ -84,7 +64,7 @@ class ScanningPage extends HookWidget {
                   decoration: kredClassicDecor,
                   child: Column(
                     children: [
-                      const Expanded(flex: 6, child: SizedBox()),
+                      const Expanded(flex: 7, child: SizedBox()),
                       Expanded(
                         flex: 3,
                         child: Padding(
@@ -97,6 +77,7 @@ class ScanningPage extends HookWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
+                                  Text(_counter.toString()),
                                   const Text(
                                     "Total (£)",
                                     style: kBodyMedium,
@@ -105,25 +86,18 @@ class ScanningPage extends HookWidget {
                                     height: kverySmallDistance,
                                   ),
                                   Container(
-                                    child: listInventoryModel.value.data.isEmpty
-                                        ? Text(0.toString(),
-                                            style: kTitleMediumLarge)
+                                    child: listInventoryModel.data.isEmpty
+                                        ? Text(0.toString(), style: kTitleMediumLarge)
                                         : Text(
-                                            listInventoryModel.value
-                                                .getSumprice()
-                                                .toString(),
+                                            listInventoryModel.getSumprice().toString(),
                                             style: kTitleMediumLarge),
                                   ),
                                   const SizedBox(
                                     height: kverySmallDistance,
                                   ),
                                   ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.all(
-                                              kSmallDistance),
-                                          backgroundColor: kwhiteOpacity50),
-                                      onPressed: () => Navigator.pushNamed(
-                                          context, "/success"),
+                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(kSmallDistance), backgroundColor: kwhiteOpacity50),
+                                      onPressed: () => Navigator.pushNamed(context, "/success"),
                                       child: const Expanded(
                                         child: Text(
                                           "Pay",
@@ -145,7 +119,11 @@ class ScanningPage extends HookWidget {
           ],
         ),
       ),
-
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), 
     );
   }
 }

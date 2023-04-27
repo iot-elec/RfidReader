@@ -8,6 +8,7 @@ abstract class NFC_abs {
   Future<void> init();
   bool checkReader();
   Future<String> getFirstReader();
+  Future<void> removeCard();
   Future<List<int>> readCard({int readerIndex});
 }
 
@@ -48,6 +49,19 @@ class NFC implements NFC_abs{
       return reader;
     }
   }
+
+  @override
+  Future<void> removeCard() async {
+    try {
+      String reader = _readers[0];
+      await Pcsc.waitForCardRemoved(_ctx, reader);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+  
 
   @override
   Future<List<int>> readCard({int readerIndex=0}) async {
