@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test_nfc/model/inventory.dart';
 import 'package:test_nfc/model/mock/data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:test_nfc/service/implement/get_inventory_service.dart';
 import 'package:test_nfc/service/nfc.dart';
 import 'package:test_nfc/theme/styles_const.dart';
 import 'package:test_nfc/widgets/Item_list_dashboard.dart';
@@ -29,41 +31,66 @@ class ScanningPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final listInventoryModel = useState(ListInventoryModel(data: []));
-    final _counter = useState(0);
+    final countState = useState(true);
 
-    useEffect( () {
-    // side effects code here.
-    //subscription to a stream, opening a WebSocket connection, or performing HTTP requests
+    useEffect(() {
+      // side effects code here.
+      //subscription to a stream, opening a WebSocket connection, or performing HTTP requests
       Future<void> tagReaderasync() async {
         NFC nfc = NFC();
         await nfc.init();
 
         if (nfc.checkReader()) {
-
           List<int> res = await nfc.readCard(readerIndex: 0);
           await nfc.removeCard();
+          var logic = true;
+          listInventoryModel.value.data.forEach((d) {
+            logic = logic & !d.inventoryId.every((e) => res.contains(e));
+          });
 
-          if (kDebugMode) {
-            print(res);
-          }          
-
-          if (listInventoryModel.value.data.isNotEmpty ) {
-            if (!listInventoryModel.value.checkIfInventoryIdIsAdded(res)) {
+          //prevent reading the same item
+          if (logic) {
+            try {
+              InventoryService inventoryInstance = InventoryService();
+              InventoryModel imodel =
+                  await inventoryInstance.getInventoryModel(res);
               if (kDebugMode) {
-                print("call api");
+                print(imodel);
               }
-              // call api to get new inventory data
-            } 
-          } 
+              if (listInventoryModel.value.data.isEmpty) {
+                listInventoryModel.value.data = [imodel];
+              } else {
+                //check if that is not repeated
+                listInventoryModel.value.data = [
+                  ...listInventoryModel.value.data,
+                  imodel
+                ];
+              }
 
-          // mock data test
-          var r = json.decode(inventoryDataMock);
-          listInventoryModel.value = listInventoryModel.value.fromJson(r);
+              if (kDebugMode) {
+                print(listInventoryModel.value.data);
+              }
+            } on Exception catch (e) {
+              if (kDebugMode) {
+                print(e);
+              }
+            }
+          }
+
+          countState.value = !countState.value;
+
+          //   }
+          // }
+
+          // // mock data test
+          // var r = json.decode(inventoryDataMock);
+          // listInventoryModel.value = listInventoryModel.value.fromJson(r);
         }
         // return listInventoryModel.fromJson(r);
       }
+
       tagReaderasync();
-    });
+    }, [countState.value]);
 
     return Scaffold(
       body: Center(
@@ -145,7 +172,6 @@ class ScanningPage extends HookWidget {
           ],
         ),
       ),
-
     );
   }
 }
