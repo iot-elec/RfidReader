@@ -8,7 +8,8 @@ A few resources to get you started the Flutter project:
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-## debugging
+## env
+after clone the project, do not forget to change .env.format to .env and .env.production (for production code) by changing the sample .env.format to the actual value.
 
 ## linux command for nfc reader
 In case the NFC reader does not work properlly, we can use these command to 

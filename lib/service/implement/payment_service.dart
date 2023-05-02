@@ -1,16 +1,24 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'apiconstance.dart';
 
 class PaymentService {
-  String url = ApiConstants.baseUrl + ApiConstants.paymentsEndpoint;
+  
+  late String url;
+
+  PaymentService() {
+    url = ApiConstants().baseUrl + ApiConstants.paymentsEndpoint;
+  }
 
   Future<int> postPayment(List<List<int>> listOfTagIds) async {
     // "id": ["[18, 78, 75, 4, 144, 0]","[253, 71, 75, 4, 144, 0]"]
 
     List<String> tagsOfIdList = listOfTagIds.map((l) => l.toString()).toList();
 
-    print(tagsOfIdList);
+    if (kDebugMode) {
+      print(tagsOfIdList);
+    }
 
     final response = await http.post(
       Uri.parse(url),
