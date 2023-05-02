@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_nfc/theme/styles_const.dart';
 import 'package:test_nfc/widgets/start_page_template.dart';
 
 class SuccessPage extends StatelessWidget {

@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:test_nfc/model/inventory.dart';
-
 import 'package:http/http.dart' as http;
 import 'apiconstance.dart';
 
