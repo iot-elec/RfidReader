@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:json_annotation/json_annotation.dart';
 
 import 'item.dart';
@@ -44,6 +41,14 @@ class ListInventoryModel {
       sumPrice = sumPrice + d.price;
     }
     return double.parse(sumPrice.toDouble().toStringAsFixed(2));
+  }
+
+  List<List<int>> getInventoryIdList() {
+    List<List<int>> res = [];
+    for (var d in data) {
+      res.add(d.inventoryId);
+    }
+    return res;
   }
 }
 

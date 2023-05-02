@@ -8,12 +8,13 @@ const double kMediumDistance = 30;
 
 const Color kgreen100 = Color(0xFFB4EFBA);
 const Color kgreen200 = Color(0xFFEFFEF1);
-const Color kgreen500 = Color(0xFF095307);
+const Color kgreen500 = Color(0xFF053704);
 const Color kgreen600 = Color(0xFFE5FFDC);
 const Color kgreen700 = Color(0xe8197B2E);
 const Color kgreen800 = Color(0xff0f6f24);
 
 const Color kred100 = Color(0xFFFFE1C5);
+Color kred100opacity80 = kred100.withOpacity(0.8);
 const Color kred400 = Color(0xFFDA0000);
 const Color kred800 = Color(0xFF660000);
 
@@ -25,6 +26,7 @@ const Color kyellow100 = Color(0xFFF0F451);
 const Color kwhiteOpacity50 = Color(0x80FFFFFF);
 
 const Color kblack100 = Color(0xFFF1F1F1);
+const Color kblack400 = Color(0xFF686868);
 const Color kblack700 = Color(0xFF333333);
 const Color kblack800 = Color(0xff222222);
 const Color kblack900 = Color(0xff111111);
@@ -48,11 +50,20 @@ const LinearGradient kgreenLinearGradient = LinearGradient(
     end: Alignment.bottomCenter,
     colors: [kgreen100, kgreen200]);
 
+
 const BoxDecoration kgreenLinearGradientDecor =
     BoxDecoration(gradient: kgreenLinearGradient);
 
-const BoxDecoration kredClassicDecor =
-    BoxDecoration(color: kred100, borderRadius: kDefaultRadius);
+BoxDecoration kredClassicDecor =
+    BoxDecoration(color: kred100opacity80, borderRadius: kDefaultRadius);
+
+const BoxDecoration kwhiteOpacityDecor =
+    BoxDecoration(color: kwhiteOpacity50, borderRadius: kDefaultRadius);
+
+BoxDecoration kbackgroundImageDecor = BoxDecoration(
+  image: DecorationImage(image: const AssetImage('assets/veggies.jpg'), fit: BoxFit.cover, colorFilter: ColorFilter.mode(kblack400.withOpacity(0.5), BlendMode.darken))
+);
+
 
 BoxDecoration klightredContainerDecor = const BoxDecoration(
   color: kwhiteOpacity50,
@@ -114,6 +125,13 @@ const kTitleMediumLarge = TextStyle(
   letterSpacing: 1,
 );
 
+const kBodyLarge =
+    TextStyle(color: kgreen500,
+  fontSize: 26,
+  fontFamily: kFontNotoSans,
+  fontWeight: FontWeight.w400,
+  letterSpacing: 1,);
+
 const kTitleMedium = TextStyle(
   color: Colors.white,
   fontSize: 16,
@@ -142,3 +160,5 @@ const AppBarTheme kAppBarTheme = AppBarTheme(
   titleTextStyle: kTitleMedium,
   toolbarHeight: 65,
 );
+
+const PageTransitionsTheme kPageTransitionTheme = PageTransitionsTheme(builders: {TargetPlatform.linux: CupertinoPageTransitionsBuilder(),});

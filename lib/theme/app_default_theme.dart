@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'styles_const.dart';
 
 ThemeData kAppDefaultTheme = ThemeData.fallback().copyWith(
-    backgroundColor: kblack100,
+  pageTransitionsTheme: kPageTransitionTheme,
     scaffoldBackgroundColor: kblack100,
     appBarTheme: kAppBarTheme,
     primaryColor: kgreen500,
