@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:test_nfc/model/inventory.dart';
 
@@ -23,7 +20,8 @@ class ItemListWidget extends StatelessWidget {
         child: Flex(
           direction: Axis.horizontal,
           children: [
-            Expanded(flex: 1, child: Image.memory(base64Decode(imgString))),
+            //Image.memory(base64Decode(imgString))
+            Expanded(flex: 1, child: Container()),
             const SizedBox(
               width: kDefaultDistance,
             ),

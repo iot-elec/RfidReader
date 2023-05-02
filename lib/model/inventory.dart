@@ -45,6 +45,14 @@ class ListInventoryModel {
     }
     return double.parse(sumPrice.toDouble().toStringAsFixed(2));
   }
+
+  List<List<int>> getInventoryIdList() {
+    List<List<int>> res = [];
+    for (var d in data) {
+      res.add(d.inventoryId);
+    }
+    return res;
+  }
 }
 
 @JsonSerializable()

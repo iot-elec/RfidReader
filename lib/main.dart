@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           case "/welcome":
             return MaterialPageRoute(builder: (context) => const WelcomePage());
           case "/scanning":
-            return MaterialPageRoute(builder: (context) => ScanningPage());
+            return MaterialPageRoute(builder: (context) => const ScanningPage());
           case "/success":
             return MaterialPageRoute(builder: (context) => const SuccessPage());
           default:

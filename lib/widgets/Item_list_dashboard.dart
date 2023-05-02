@@ -23,10 +23,9 @@ class ItemListDashBoardWidget extends StatelessWidget {
                       const ItemListHeaderWidget(),
                       Expanded(
                         child: listInventoryModel.data.isEmpty
-                            ? const SizedBox(
-                                width: 0,
-                                height: 0,
-                              )
+                            ? const Center(
+                              child: Text("Put the basket of item near RFID reader", style: kBodyLarge,),
+                            )
                             : ListView.builder(
                                 itemCount: listInventoryModel.data.length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -42,34 +41,3 @@ class ItemListDashBoardWidget extends StatelessWidget {
               );
   }
 }
-
-
-
-// return Padding(
-//                 padding: const EdgeInsets.all(kSmallDistance),
-//                 child: Container(
-//                   decoration: kredClassicDecor,
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     children: <Widget>[
-//                       const ItemListHeaderWidget(),
-//                       Expanded(
-//                         child: listInventoryModel.data.isEmpty
-//                             ? const SizedBox(
-//                                 width: 0,
-//                                 height: 0,
-//                               )
-//                             : ListView.builder(
-//                                 itemCount: listInventoryModel.data.length,
-//                                 itemBuilder: (BuildContext context, int index) {
-//                                   return ItemListWidget(
-//                                     model: listInventoryModel.data[index],
-//                                     imgString: fileMockImg,
-//                                   );
-//                                 }),
-//                       )
-//                     ],
-//                   ),
-//                 ),
-//               );
-//   }

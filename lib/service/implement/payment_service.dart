@@ -6,29 +6,31 @@ import 'package:http/http.dart' as http;
 import 'apiconstance.dart';
 
 class PaymentService {
-  String baseUrl = ApiConstants.baseUrl + ApiConstants.paymentsEndpoint;
+  String url = ApiConstants.baseUrl + ApiConstants.paymentsEndpoint;
 
-  Future<void> postPayment(List<int> listOfTagIds) async {
+  Future<int> postPayment(List<List<int>> listOfTagIds) async {
     // "id": ["[18, 78, 75, 4, 144, 0]","[253, 71, 75, 4, 144, 0]"]
-    String tagsOfIdList =
-        "[${listOfTagIds.map((i) => i.toString()).join(", ")}]";
+
+    List<String> tagsOfIdList = listOfTagIds.map((l) => l.toString()).toList();
+
+    print(tagsOfIdList);
 
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(url),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json",
       },
-      body: jsonEncode(<String, String>{
-        'id': tagsOfIdList,
+      body: jsonEncode(<String, List<String>>{
+        "id": tagsOfIdList,
       }),
     );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      return;
+      return 200;
     } else {
-      throw Exception('Cannot pay the money successfully');
+      return response.statusCode;
     }
   }
 }
