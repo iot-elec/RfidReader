@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:test_nfc/service/implement/get_inventory_service.dart';
 import 'package:test_nfc/service/nfc.dart';
 import 'package:test_nfc/theme/styles_const.dart';
-import 'package:test_nfc/widgets/Item_list_dashboard.dart';
+import 'package:test_nfc/widgets/item_list_dashboard.dart';
 
 import '../service/implement/payment_service.dart';
 
