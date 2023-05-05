@@ -23,3 +23,11 @@ for create model.g.dart file
 ## deployment
 This application can be deployed on the edge computing device which used linux system by by following this [online documentation](https://docs.flutter.dev/platform-integration/linux/building).
 .
+
+## UI
+The UI of the app is shown below
+![image](img/p1.png)
+![image](img/p2.png)
+![image](img/p2_afterscan.png)
+![image](img/p3.png)
+
